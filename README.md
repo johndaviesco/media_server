@@ -7,9 +7,24 @@ https://www.linuxserver.io/2017/06/24/the-perfect-media-server-2017/
 docker
 docker-compose
 
-1. add user for 
+1. Add user for containers
 ```shell
 useradd dockeruser
 id dockeruser
 ```
 
+2. Create a file /etc/environment
+```shell
+PUID=1001
+PGID=1001
+```
+
+3. Create docker compose YML
+
+4. Run docker with docker compose
+```shell
+# execute docker compose file
+docker-compose -f /path/to/docker-compose.yml up -d
+# get logs from containers
+docker-compose -f /path/to/docker-compose.yml logs
+```
