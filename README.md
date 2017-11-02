@@ -24,7 +24,7 @@ PGID=1001
 4. Run docker with docker compose
 ```shell
 # execute docker compose file
-docker-compose -f /path/to/docker-compose.yml up -d
+docker-compose -f media_server.yml up -d
 # get logs from containers
-docker-compose -f /path/to/docker-compose.yml logs
+docker-compose -f media_server.yml logs
 ```
