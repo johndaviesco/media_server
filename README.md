@@ -2,6 +2,7 @@
 Based on
 https://www.linuxserver.io/2017/06/24/the-perfect-media-server-2017/
 https://github.com/plexinc/pms-docker
+https://hub.docker.com/u/linuxserver/
 
 ## Requires
 
