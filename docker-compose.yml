@@ -1,0 +1,137 @@
+---
+version: '2'
+services:
+  plex:
+    image: plexinc/pms-docker
+    container_name: plex
+    # volumes:
+    #   - /data/appdata/plex:/config
+    #   - /srv/iscsi/:/data
+    network_mode: host
+    restart: always
+    environment:
+      - PLEX_CLAIM="nope"
+      - PUID
+      - PGID
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    # volumes:
+    #   - /data/appdata/sonarr:/config
+    #   - /srv/iscsi/tv:/tv
+    #   - /srv/iscsi/downloads/complete/transmission-sonarr:/downloads
+    #   - /srv/iscsi/downloads/complete/tv_import:/tv_import
+    ports:
+      - 8989
+    restart: always
+    environment:
+      - PUID
+      - PGID
+    labels:
+      - traefik.backend=sonarr
+      - traefik.frontend.rule=Host:sonarr.docker.local
+      - traefik.docker.network=proxy
+      - traefik.port=8989
+      ## individual passwords
+      # - traefik.frontend.auth.basic=EXPR
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    # volumes:
+    #   - /data/appdata/radarr:/config
+    #   - /srv/iscsi/movies:/movies
+    #   - /srv/iscsi/downloads/complete/transmission-radarr:/downloads
+    ports:
+      - 7878
+    environment:
+      - PUID
+      - PGID
+    restart:
+      always
+    labels:
+      - traefik.backend=radarr
+      - traefik.frontend.rule=Host:radarr.docker.local
+      - traefik.docker.network=proxy
+      - traefik.port=7878
+      ## individual passwords
+      # - traefik.frontend.auth.basic=EXPR
+  transmission-sonarr:
+    image: linuxserver/transmission
+    container_name: transmission-sonarr
+    ports:
+      - 9091
+    #  - 51413:51413/udp
+    # volumes:
+    #   - /data/appdata/transmission-sonarr:/config
+    #   - /srv/iscsi/downloads/complete/transmission-sonarr:/downloads
+    #   - /srv/iscsi/watch/transmission-sonarr:/watch
+    restart:
+      always
+    environment:
+      - PUID
+      - PGID
+      - TZ=Pacific/Auckland
+    labels:
+      - traefik.backend=transmission-sonarr
+      - traefik.frontend.rule=Host:transmission-sonarr.docker.local
+      - traefik.docker.network=proxy
+      - traefik.port=9091
+      ## individual passwords
+      # - traefik.frontend.auth.basic=EXPR
+  transmission-radarr:
+    image: linuxserver/transmission
+    container_name: transmission-radarr
+    ports:
+      - 9091
+    #  - 51413:51413/udp
+    # volumes:
+    #   - /data/appdata/transmission-radarr:/config
+    #   - /srv/iscsi/downloads/complete/transmission-radarr:/downloads
+    #   - /srv/iscsi/watch/transmission-radarr:/watch
+    restart:
+      always
+    environment:
+      - PUID
+      - PGID
+      - TZ=Pacific/Auckland
+    labels:
+      - traefik.backend=transmission-radarr
+      - traefik.frontend.rule=Host:transmission-radarr.docker.local
+      - traefik.docker.network=proxy
+      - traefik.port=9091
+      ## individual passwords
+      # - traefik.frontend.auth.basic=EXPR
+  jackett:
+    image: linuxserver/jackett
+    container_name: jackett
+    ports:
+      - 9117
+    # volumes:
+    #   - /data/appdata/jackett:/config
+    #   - /srv/iscsi/downloads/complete/jackett:/downloads
+    #   - /etc/localtime:/etc/localtime:ro
+    restart:
+      always
+    environment:
+      - PUID
+      - PGID
+      - TZ=Pacific/Auckland
+    labels:
+      - traefik.backend=jackett
+      - traefik.frontend.rule=Host:jackett.docker.local
+      - traefik.docker.network=proxy
+      - traefik.port=9117
+  traefik:
+    image: traefik
+    container_name: traefik
+    ports:
+      - 8080:8080
+      - 80:80
+    volumes:
+      - /tmp/traefik.toml:/etc/traefik/
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart:
+      always
+    environment:
+      - PUID
+      - PGID

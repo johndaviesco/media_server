@@ -30,3 +30,15 @@ docker-compose -f media_server.yml up -d
 # get logs from containers
 docker-compose -f media_server.yml logs
 ```
+
+## Testing
+`sudo nano /etc/hosts`
+
+```shell
+# Local Test Media Server
+127.0.0.1   radarr.docker.local
+127.0.0.1   sonar.docker.local
+127.0.0.1   transmission-sonarr.docker.local
+127.0.0.1   transmission-radarr.docker.local
+127.0.0.1   jackett.docker.local
+```
