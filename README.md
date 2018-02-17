@@ -37,7 +37,7 @@ docker-compose -f media_server.yml logs
 ```shell
 # Local Test Media Server
 127.0.0.1   radarr.docker.local
-127.0.0.1   sonar.docker.local
+127.0.0.1   sonarr.docker.local
 127.0.0.1   transmission-sonarr.docker.local
 127.0.0.1   transmission-radarr.docker.local
 127.0.0.1   jackett.docker.local
